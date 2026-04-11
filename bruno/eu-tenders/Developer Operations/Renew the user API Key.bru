@@ -1,0 +1,15 @@
+meta {
+  name: Renew the user API Key
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v3/api-keys/:token/renew
+  body: none
+  auth: inherit
+}
+
+params:path {
+  token: 
+}

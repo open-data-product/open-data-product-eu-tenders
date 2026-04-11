@@ -1,0 +1,15 @@
+meta {
+  name: Stop the notice publication
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v3/notices/:businessId/stop-publication
+  body: none
+  auth: inherit
+}
+
+params:path {
+  businessId: 
+}

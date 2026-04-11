@@ -1,0 +1,11 @@
+meta {
+  name: Return version-range.json
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/v3/config/sdk-versions
+  body: none
+  auth: inherit
+}

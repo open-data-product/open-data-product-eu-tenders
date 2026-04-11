@@ -1,0 +1,144 @@
+meta {
+  name: Get HTML or PDF rendering of a notice sent in the request body (POST)
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/v3/notices/render-async
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "file": "",
+    "language": "",
+    "format": "",
+    "summary": false,
+    "callbackUrl": ""
+  }
+}
+
+example {
+  name: get HTML notice
+  description: The HTML rendering of the notice.
+  
+  request: {
+    url: {{baseUrl}}/v3/notices/render-async
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "file": "",
+        "language": "",
+        "format": "",
+        "summary": false,
+        "callbackUrl": ""
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: text/html
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: html
+      content: '''
+        <!DOCTYPE html>
+        <html lang="en">
+          <body>
+            <div class="content">
+              <div class="h2" id="section1">1 <span label-id="auxiliary|text|buyer">Buyer</span>
+              </div>
+            </div>
+          </body>
+        </html>
+      '''
+    }
+  }
+}
+
+example {
+  name: get PDF notice
+  description: The PDF rendering of the notice.
+  
+  request: {
+    url: {{baseUrl}}/v3/notices/render-async
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "file": "",
+        "language": "",
+        "format": "",
+        "summary": false,
+        "callbackUrl": ""
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/pdf
+    }
+  
+    status: {
+      code: 200
+      text: OK
+    }
+  
+    body: {
+      type: text
+    }
+  }
+}
+
+example {
+  name: Bad Request
+  description: Invalid format.
+  
+  request: {
+    url: {{baseUrl}}/v3/notices/render-async
+    method: POST
+    mode: json
+    body:json: {
+      {
+        "file": "",
+        "language": "",
+        "format": "",
+        "summary": false,
+        "callbackUrl": ""
+      }
+    }
+  }
+  
+  response: {
+    headers: {
+      Content-Type: application/json
+    }
+  
+    status: {
+      code: 400
+      text: Bad Request
+    }
+  
+    body: {
+      type: json
+      content: '''
+        {
+          "errorCode": 400,
+          "message": "Invalid 'format' parameter value. Possible values are: [PDF, HTML].",
+          "timestamp": {}
+        }
+      '''
+    }
+  }
+}

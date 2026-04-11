@@ -1,0 +1,21 @@
+meta {
+  name: Search for notices using expert search query
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v3/notices/search
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "query": "FT~*",
+    "fields": ["INVALID_FIELD_NAME"],
+    "scope": "ACTIVE",
+    "limit": 1,
+    "page": 1
+  }
+}

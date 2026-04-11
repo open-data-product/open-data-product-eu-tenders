@@ -1,0 +1,16 @@
+meta {
+  name: Submit XML notice
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v3/notices/submit
+  body: multipartForm
+  auth: inherit
+}
+
+body:multipart-form {
+  metadata: 
+  notice: 
+}

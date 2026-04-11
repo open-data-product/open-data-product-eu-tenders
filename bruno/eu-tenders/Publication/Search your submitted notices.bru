@@ -1,0 +1,19 @@
+meta {
+  name: Search your submitted notices
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/v3/notices
+  body: none
+  auth: inherit
+}
+
+params:query {
+  searchNotices: 
+  ~page: 
+  ~size: 
+  ~sortProperty: 
+  ~sortDirection: 
+}

@@ -1,0 +1,20 @@
+meta {
+  name: Get HTML or PDF rendering of a notice sent in the request body
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/v3/notices/render
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "file": "",
+    "language": "",
+    "format": "",
+    "summary": false
+  }
+}
