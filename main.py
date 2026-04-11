@@ -16,12 +16,6 @@ import click
 from opendataproduct.config.data_product_manifest_loader import (
     load_data_product_manifest,
 )
-from opendataproduct.config.data_transformation_gold_loader import (
-    load_data_transformation_gold,
-)
-from opendataproduct.config.data_transformation_silver_loader import (
-    load_data_transformation_silver,
-)
 from opendataproduct.config.dpds_loader import load_dpds
 from opendataproduct.config.odps_loader import load_odps
 from opendataproduct.document.data_product_canvas_generator import (
@@ -37,10 +31,8 @@ from opendataproduct.document.jupyter_notebook_creator import (
 )
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
-from opendataproduct.extract.data_extractor import extract_data
-from opendataproduct.transform.data_aggregator import aggregate_data
-from opendataproduct.transform.data_copier import copy_data
-from opendataproduct.transform.data_csv_converter import convert_data_to_csv
+
+from lib.eu_ted_api_client import search_ted_notices
 
 file_path = os.path.realpath(__file__)
 script_path = os.path.dirname(file_path)
@@ -57,10 +49,6 @@ def main(clean, quiet):
     docs_path = os.path.join(script_path, "docs")
 
     data_product_manifest = load_data_product_manifest(config_path=script_path)
-    data_transformation_silver = load_data_transformation_silver(
-        config_path=script_path
-    )
-    data_transformation_gold = load_data_transformation_gold(config_path=script_path)
     odps = load_odps(config_path=script_path)
     dpds = load_dpds(config_path=script_path)
 
@@ -68,43 +56,9 @@ def main(clean, quiet):
     # Bronze: Integrate
     #
 
-    extract_data(
-        data_product_manifest=data_product_manifest,
-        results_path=bronze_path,
-        clean=clean,
-        quiet=quiet,
-    )
-
-    #
-    # Silver: Transform
-    #
-
-    copy_data(
-        data_transformation=data_transformation_silver,
-        source_path=bronze_path,
-        results_path=silver_path,
-        clean=clean,
-        quiet=quiet,
-    )
-
-    convert_data_to_csv(
-        data_transformation=data_transformation_silver,
-        source_path=silver_path,
-        results_path=silver_path,
-        clean=clean,
-        quiet=quiet,
-    )
-
-    #
-    # Gold: Aggregate
-    #
-
-    aggregate_data(
-        data_transformation=data_transformation_gold,
-        source_path=silver_path,
-        results_path=gold_path,
-        clean=clean,
-        quiet=quiet,
+    search_ted_notices(
+        query="FT~solar",
+        fields=["ND"],
     )
 
     #
