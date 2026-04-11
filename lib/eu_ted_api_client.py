@@ -51,6 +51,14 @@ def build_query(search_term=None):
     return query
 
 
+class Field(Enum):
+    PUBLICATION_NUMBER = "ND"
+
+
+def build_fields(fields: [Field]):
+    return [f.value for f in fields]
+
+
 def search_ted_notices(query, fields, scope: Scope = "ACTIVE", quiet=False):
     notices = []
 
@@ -72,10 +80,12 @@ def search_ted_notices(query, fields, scope: Scope = "ACTIVE", quiet=False):
         )
         notices.extend(ted_search_response.notices)
 
+    notices
+
 
 def call_search_api(
     query, fields, scope: Scope = "ACTIVE", limit=10, page=1, quiet=False
-):
+) -> TedSearchResponse:
     """
     Calls the EU TED Search API
     :param query: query

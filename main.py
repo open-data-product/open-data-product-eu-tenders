@@ -32,7 +32,8 @@ from opendataproduct.document.jupyter_notebook_creator import (
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
 
-from lib.eu_ted_api_client import build_query, search_ted_notices
+from lib.eu_ted_api_client import Field
+from lib.eu_ted_api_client import build_query, build_fields, search_ted_notices
 
 file_path = os.path.realpath(__file__)
 script_path = os.path.dirname(file_path)
@@ -57,10 +58,15 @@ def main(clean, quiet):
     #
 
     query = build_query(search_term="solar")
+    fields = build_fields(
+        [
+            Field.PUBLICATION_NUMBER,
+        ]
+    )
 
     search_ted_notices(
         query=query,
-        fields=["ND"],
+        fields=fields,
     )
 
     #
