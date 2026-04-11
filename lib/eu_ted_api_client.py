@@ -36,6 +36,21 @@ class Scope(Enum):
     LATEST = "LATEST"
 
 
+def build_query(search_term=None):
+    """
+    Builds query
+    :param search_term: search term
+    :return:
+    """
+    query = ""
+
+    if search_term:
+        # FT = Full-text
+        query += f"FT~{search_term}"
+
+    return query
+
+
 def search_ted_notices(query, fields, scope: Scope = "ACTIVE", quiet=False):
     notices = []
 
