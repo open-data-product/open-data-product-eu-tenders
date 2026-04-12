@@ -33,5 +33,5 @@ def transform_eu_tenders(
                 os.makedirs(
                     os.path.join(os.path.dirname(results_file_path)), exist_ok=True
                 )
-                dataframe.to_csv(results_file_path)
+                dataframe.to_csv(results_file_path, index=False, encoding="utf-8-sig")
                 not quiet and print(f"✓ Tranform {os.path.basename(results_file_path)}")
