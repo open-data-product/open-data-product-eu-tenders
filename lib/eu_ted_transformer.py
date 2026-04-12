@@ -13,7 +13,7 @@ def transform_eu_tenders(
     quiet=False,
 ):
     def _dedup_list_string(val):
-        if pd.isna(val):
+        if pd.api.types.is_scalar(val) and pd.isna(val):
             return val
         try:
             parsed_list = ast.literal_eval(str(val))
@@ -24,7 +24,7 @@ def transform_eu_tenders(
         return val
 
     def _extract_deu_or_eng(val):
-        if pd.isna(val):
+        if pd.api.types.is_scalar(val) and pd.isna(val):
             return ""
         try:
             parsed_dict = ast.literal_eval(str(val))
@@ -38,7 +38,7 @@ def transform_eu_tenders(
         return val
 
     def _unpack_single_list(val):
-        if pd.isna(val):
+        if pd.api.types.is_scalar(val) and pd.isna(val):
             return val
         try:
             parsed = ast.literal_eval(str(val))
