@@ -32,8 +32,7 @@ from opendataproduct.document.jupyter_notebook_creator import (
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
 
-from lib.eu_ted_api_client import Field
-from lib.eu_ted_api_client import build_query, build_fields, search_ted_notices
+from lib.eu_ted_api_client import search_ted_notices
 
 file_path = os.path.realpath(__file__)
 script_path = os.path.dirname(file_path)
@@ -57,19 +56,71 @@ def main(clean, quiet):
     # Bronze: Integrate
     #
 
-    query = build_query(search_term="solar")
-    fields = build_fields(
-        [
-            Field.PUBLICATION_NUMBER,
+    # Iterate over NUTS-1 regions
+    for nuts_region in [
+        "DE1",
+        "DE2",
+        "DE3",
+        "DE4",
+        "DE5",
+        "DE6",
+        "DE7",
+        "DE8",
+        "DE9",
+        "DEA",
+        "DEB",
+        "DEC",
+        "DED",
+        "DEE",
+        "DEF",
+        "DEG",
+    ]:
+        query = (
+            f"classification-cpv IN (60100000 60112000 60130000 60140000 60170000 60172000 60000000) "
+            f"AND main-classification-proc NOT IN (60400000 60410000 60420000 60160000 60423000 45422000 64121200 60200000 64100000 60440000 63712000) "
+            f"AND (place-of-performance IN ({nuts_region})) "
+            f"SORT BY publication-number DESC"
+        )
+        fields = [
+            "notice-type",
+            "place-of-performance",
+            "procedure-type",
+            "publication-date",
+            "publication-number",
+            "buyer-name",
+            "title-proc",
+            "additional-info-proc",
+            "document-url-lot",
+            "option-description-lot",
+            "description-lot",
+            "description-part",
+            "description-proc",
+            "contract-duration-start-date-lot",
+            "contract-duration-start-date-part",
+            "contract-duration-end-date-lot",
+            "contract-duration-end-date-part",
+            "winner-name",
+            "vehicle-type-val-res",
+            "main-classification-proc",
+            "direct-award-justification-proc",
+            "selection-criterion-description-lot",
+            "organisation-contact-point-buyer",
+            "organisation-tel-buyer",
+            "organisation-email-buyer",
+            "renewal-maximum-lot",
+            "total-value",
+            "award-criterion-type-lot",
         ]
-    )
 
-    search_ted_notices(
-        bronze_path,
-        "test.csv",
-        query=query,
-        fields=fields,
-    )
+        search_ted_notices(
+            results_file_path=os.path.join(
+                bronze_path,
+                "eu-tenders-public-transport",
+                f"eu-tenders-public-transport-{nuts_region}.csv",
+            ),
+            query=query,
+            fields=fields,
+        )
 
     #
     # Documentation

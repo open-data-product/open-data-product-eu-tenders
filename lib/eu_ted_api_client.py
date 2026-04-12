@@ -1,3 +1,4 @@
+import os
 import time
 from enum import Enum
 from typing import Optional
@@ -6,7 +7,6 @@ import pandas as pd
 import requests
 from pydantic import BaseModel, Field
 from tqdm import tqdm
-import os
 
 BASE_URL = "https://api.ted.europa.eu"
 SEARCH_API = f"{BASE_URL}/v3/notices/search"
@@ -49,10 +49,8 @@ def build_fields(fields: [Field]):
 
 
 def search_ted_notices(
-    results_path, file_name, query, fields, scope: Scope = "ACTIVE", quiet=False
+    results_file_path, query, fields, scope: Scope = "ACTIVE", quiet=False
 ):
-    results_file_path = os.path.join(results_path, "eu-tenders", file_name)
-
     notices = []
 
     # Check how many notices exist
@@ -79,7 +77,7 @@ def search_ted_notices(
     notices_dataframe_filtered = notices_dataframe[existing_cols]
 
     # Save results
-    os.makedirs(os.path.join(results_path), exist_ok=True)
+    os.makedirs(os.path.join(os.path.dirname(results_file_path)), exist_ok=True)
     notices_dataframe_filtered.to_csv(results_file_path, index=False)
     if not quiet:
         print(f"✓ Save {os.path.basename(results_file_path)}")
