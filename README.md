@@ -1,3 +1,4 @@
+[![Crawl content](https://github.com/open-data-product/open-data-product-eu-tenders/actions/workflows/crawl-content.yml/badge.svg)](https://github.com/open-data-product/open-data-product-eu-tenders/actions/workflows/crawl-content.yml)
 [![Issues](https://img.shields.io/github/issues/open-data-product/open-data-product-eu-tenders)](https://github.com/open-lifeworlds/open-lifeworlds-data-product-eu-tenders/issues)
 
 <br />

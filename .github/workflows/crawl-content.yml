@@ -1,0 +1,34 @@
+name: Crawl content
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '0 0 * * 1'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install uv
+        uses: astral-sh/setup-uv@v5
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version-file: ".python-version"
+      - name: Install dependencies
+        run: |
+          uv cache clean
+          uv sync
+          uv pip install --no-cache-dir "git+https://github.com/open-data-product/open-data-product-python-lib.git@main"
+      - name: Run main script
+        id: run-main-script
+        run: |
+          uv run main.py --clean
+      - name: Commit changes
+        id: commit-changes
+        uses: stefanzweifel/git-auto-commit-action@v6
+        with:
+          commit_author: Florian Schwanz <florian.schwanz@interoberlin.de>
+          commit_message: "chore(data): update data"

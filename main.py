@@ -3,6 +3,11 @@
 # dependencies = [
 #     "click>=8.2.1",
 #     "open-data-product-python-lib",
+#     "pandas>=3.0.2",
+#     "pydantic>=2.12.5",
+#     "requests>=2.33.1",
+#     "rich>=14.1.0",
+#     "tqdm>=4.67.3",
 # ]
 #
 # [tool.uv.sources]
