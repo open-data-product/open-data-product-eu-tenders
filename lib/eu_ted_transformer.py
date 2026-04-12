@@ -1,3 +1,4 @@
+import ast
 import os
 
 import pandas as pd
@@ -11,6 +12,17 @@ def transform_eu_tenders(
     fields,
     quiet=False,
 ):
+    def _dedup_list_string(val):
+        if pd.isna(val):
+            return val
+        try:
+            parsed_list = ast.literal_eval(str(val))
+            if isinstance(parsed_list, list):
+                return str(list(dict.fromkeys(parsed_list)))
+        except (ValueError, SyntaxError):
+            pass
+        return val
+
     for subdir, dirs, files in sorted(os.walk(source_path)):
         for file_name in sorted(files):
             _, file_extension = os.path.splitext(file_name)
@@ -27,7 +39,10 @@ def transform_eu_tenders(
                 # Read source file
                 dataframe = pd.read_csv(source_file_path)
 
-                # TODO
+                # De-duplicate lists
+                for col in fields:
+                    if col in dataframe.columns:
+                        dataframe[col] = dataframe[col].apply(_dedup_list_string)
 
                 # Write results file
                 os.makedirs(
