@@ -80,7 +80,9 @@ def search_ted_notices(
 
     # Save results
     os.makedirs(os.path.join(os.path.dirname(results_file_path)), exist_ok=True)
-    notices_dataframe_filtered.to_csv(results_file_path, index=False, encoding="utf-8-sig")
+    notices_dataframe_filtered.to_csv(
+        results_file_path, index=False, encoding="utf-8-sig"
+    )
     not quiet and print(f"✓ Save {os.path.basename(results_file_path)}")
 
 
