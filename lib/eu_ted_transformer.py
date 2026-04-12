@@ -79,6 +79,12 @@ def transform_eu_tenders(
                     if col in dataframe.columns:
                         dataframe[col] = dataframe[col].apply(_unpack_single_list)
 
+                # Add notice URL
+                if "publication-number" in dataframe.columns:
+                    dataframe["notice-url"] = dataframe["publication-number"].apply(
+                        lambda x: f"https://ted.europa.eu/de/notice/-/detail/{x}" if pd.api.types.is_scalar(x) and pd.notna(x) and str(x).strip() else pd.NA
+                    )
+
                 # Write results file
                 os.makedirs(
                     os.path.join(os.path.dirname(results_file_path)), exist_ok=True
