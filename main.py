@@ -37,6 +37,7 @@ from opendataproduct.document.jupyter_notebook_creator import (
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
 
+from lib.eu_ted_transformer import transform_eu_tenders
 from lib.eu_ted_api_client import search_ted_notices
 
 file_path = os.path.realpath(__file__)
@@ -60,6 +61,37 @@ def main(clean, quiet):
     #
     # Bronze: Integrate
     #
+
+    fields = [
+        "notice-type",
+        "place-of-performance",
+        "procedure-type",
+        "publication-date",
+        "publication-number",
+        "buyer-name",
+        "title-proc",
+        "additional-info-proc",
+        "document-url-lot",
+        "option-description-lot",
+        "description-lot",
+        "description-part",
+        "description-proc",
+        "contract-duration-start-date-lot",
+        "contract-duration-start-date-part",
+        "contract-duration-end-date-lot",
+        "contract-duration-end-date-part",
+        "winner-name",
+        "vehicle-type-val-res",
+        "main-classification-proc",
+        "direct-award-justification-proc",
+        "selection-criterion-description-lot",
+        "organisation-contact-point-buyer",
+        "organisation-tel-buyer",
+        "organisation-email-buyer",
+        "renewal-maximum-lot",
+        "total-value",
+        "award-criterion-type-lot",
+    ]
 
     # Iterate over NUTS-1 regions
     for nuts_region in [
@@ -86,36 +118,6 @@ def main(clean, quiet):
             f"AND (place-of-performance IN ({nuts_region})) "
             f"SORT BY publication-number DESC"
         )
-        fields = [
-            "notice-type",
-            "place-of-performance",
-            "procedure-type",
-            "publication-date",
-            "publication-number",
-            "buyer-name",
-            "title-proc",
-            "additional-info-proc",
-            "document-url-lot",
-            "option-description-lot",
-            "description-lot",
-            "description-part",
-            "description-proc",
-            "contract-duration-start-date-lot",
-            "contract-duration-start-date-part",
-            "contract-duration-end-date-lot",
-            "contract-duration-end-date-part",
-            "winner-name",
-            "vehicle-type-val-res",
-            "main-classification-proc",
-            "direct-award-justification-proc",
-            "selection-criterion-description-lot",
-            "organisation-contact-point-buyer",
-            "organisation-tel-buyer",
-            "organisation-email-buyer",
-            "renewal-maximum-lot",
-            "total-value",
-            "award-criterion-type-lot",
-        ]
 
         search_ted_notices(
             results_file_path=os.path.join(
@@ -128,13 +130,24 @@ def main(clean, quiet):
         )
 
     #
+    # Silver: Transform
+    #
+
+    transform_eu_tenders(
+        source_path=bronze_path,
+        results_path=silver_path,
+        fields=fields,
+        quiet=quiet,
+    )
+
+    #
     # Documentation
     #
 
     create_jupyter_notebook_for_csv(
         data_product_manifest=data_product_manifest,
         results_path=script_path,
-        data_path=bronze_path,
+        data_path=silver_path,
         clean=True,
         quiet=quiet,
     )
@@ -142,7 +155,7 @@ def main(clean, quiet):
     update_data_product_manifest(
         data_product_manifest=data_product_manifest,
         config_path=script_path,
-        data_paths=[bronze_path],
+        data_paths=[silver_path],
         file_endings=(".csv"),
         git_lfs=True,
     )

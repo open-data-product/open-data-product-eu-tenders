@@ -20,28 +20,28 @@
 ### eu-tenders-public-transport
 name: Eu Tenders Public Transport
 * owner: Open Data Product
-* url: https://github.com/open-data-product/open-data-product-eu-tenders/tree/main/data/01-bronze/eu-tenders-public-transport
+* url: https://github.com/open-data-product/open-data-product-eu-tenders/tree/main/data/02-silver/eu-tenders-public-transport
 * license: CC-BY 4.0
 * updated: 2026-04-12
 
 **Files**
 
-* [eu-tenders-public-transport-DE1.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE1.csv)
-* [eu-tenders-public-transport-DE2.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE2.csv)
-* [eu-tenders-public-transport-DE3.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE3.csv)
-* [eu-tenders-public-transport-DE4.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE4.csv)
-* [eu-tenders-public-transport-DE5.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE5.csv)
-* [eu-tenders-public-transport-DE6.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE6.csv)
-* [eu-tenders-public-transport-DE7.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE7.csv)
-* [eu-tenders-public-transport-DE8.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE8.csv)
-* [eu-tenders-public-transport-DE9.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DE9.csv)
-* [eu-tenders-public-transport-DEA.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEA.csv)
-* [eu-tenders-public-transport-DEB.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEB.csv)
-* [eu-tenders-public-transport-DEC.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEC.csv)
-* [eu-tenders-public-transport-DED.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DED.csv)
-* [eu-tenders-public-transport-DEE.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEE.csv)
-* [eu-tenders-public-transport-DEF.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEF.csv)
-* [eu-tenders-public-transport-DEG.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/01-bronze/eu-tenders-public-transport/eu-tenders-public-transport-DEG.csv)
+* [eu-tenders-public-transport-DE1.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE1.csv)
+* [eu-tenders-public-transport-DE2.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE2.csv)
+* [eu-tenders-public-transport-DE3.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE3.csv)
+* [eu-tenders-public-transport-DE4.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE4.csv)
+* [eu-tenders-public-transport-DE5.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE5.csv)
+* [eu-tenders-public-transport-DE6.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE6.csv)
+* [eu-tenders-public-transport-DE7.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE7.csv)
+* [eu-tenders-public-transport-DE8.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE8.csv)
+* [eu-tenders-public-transport-DE9.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE9.csv)
+* [eu-tenders-public-transport-DEA.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEA.csv)
+* [eu-tenders-public-transport-DEB.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEB.csv)
+* [eu-tenders-public-transport-DEC.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEC.csv)
+* [eu-tenders-public-transport-DED.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DED.csv)
+* [eu-tenders-public-transport-DEE.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEE.csv)
+* [eu-tenders-public-transport-DEF.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEF.csv)
+* [eu-tenders-public-transport-DEG.csv](https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DEG.csv)
 
 
 ## Classification

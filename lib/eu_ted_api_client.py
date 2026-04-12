@@ -5,6 +5,7 @@ from typing import Optional
 
 import pandas as pd
 import requests
+from opendataproduct.tracking_decorator import TrackingDecorator
 from pydantic import BaseModel, Field
 from tqdm import tqdm
 
@@ -48,6 +49,7 @@ def build_fields(fields: [Field]):
     return [f.value for f in fields]
 
 
+@TrackingDecorator.track_time
 def search_ted_notices(
     results_file_path, query, fields, scope: Scope = "ACTIVE", quiet=False
 ):
@@ -79,8 +81,7 @@ def search_ted_notices(
     # Save results
     os.makedirs(os.path.join(os.path.dirname(results_file_path)), exist_ok=True)
     notices_dataframe_filtered.to_csv(results_file_path, index=False)
-    if not quiet:
-        print(f"✓ Save {os.path.basename(results_file_path)}")
+    not quiet and print(f"✓ Save {os.path.basename(results_file_path)}")
 
 
 def call_search_api(
