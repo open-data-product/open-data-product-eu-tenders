@@ -23,6 +23,20 @@ def transform_eu_tenders(
             pass
         return val
 
+    def _extract_deu_or_eng(val):
+        if pd.isna(val):
+            return ""
+        try:
+            parsed_dict = ast.literal_eval(str(val))
+            if isinstance(parsed_dict, dict):
+                if "deu" in parsed_dict:
+                    return parsed_dict["deu"]
+                elif "eng" in parsed_dict:
+                    return parsed_dict["eng"]
+        except (ValueError, SyntaxError):
+            pass
+        return val
+
     for subdir, dirs, files in sorted(os.walk(source_path)):
         for file_name in sorted(files):
             _, file_extension = os.path.splitext(file_name)
@@ -43,6 +57,11 @@ def transform_eu_tenders(
                 for col in fields:
                     if col in dataframe.columns:
                         dataframe[col] = dataframe[col].apply(_dedup_list_string)
+
+                # Select preferred language
+                for col in fields:
+                    if col in dataframe.columns:
+                        dataframe[col] = dataframe[col].apply(_extract_deu_or_eng)
 
                 # Write results file
                 os.makedirs(
