@@ -2,29 +2,18 @@ import time
 from enum import Enum
 from typing import Optional
 
+import pandas as pd
 import requests
 from pydantic import BaseModel, Field
 from tqdm import tqdm
+import os
 
 BASE_URL = "https://api.ted.europa.eu"
 SEARCH_API = f"{BASE_URL}/v3/notices/search"
 
 
-class Links(BaseModel):
-    xml: dict[str, str] = Field(default_factory=dict)
-    pdf: dict[str, str] = Field(default_factory=dict)
-    pdfs: dict[str, str] = Field(default_factory=dict)
-    html: dict[str, str] = Field(default_factory=dict)
-    htmlDirect: dict[str, str] = Field(default_factory=dict)
-
-
-class TedNotice(BaseModel):
-    ND: Optional[str] = None
-    links: Optional[Links] = None
-
-
 class TedSearchResponse(BaseModel):
-    notices: list[TedNotice] = Field(default_factory=list)
+    notices: list[dict] = Field(default_factory=list)
     totalNoticeCount: int = 0
     iterationNextToken: Optional[str] = None
     timedOut: bool = False
@@ -59,7 +48,11 @@ def build_fields(fields: [Field]):
     return [f.value for f in fields]
 
 
-def search_ted_notices(query, fields, scope: Scope = "ACTIVE", quiet=False):
+def search_ted_notices(
+    results_path, file_name, query, fields, scope: Scope = "ACTIVE", quiet=False
+):
+    results_file_path = os.path.join(results_path, "eu-tenders", file_name)
+
     notices = []
 
     # Check how many notices exist
@@ -80,7 +73,16 @@ def search_ted_notices(query, fields, scope: Scope = "ACTIVE", quiet=False):
         )
         notices.extend(ted_search_response.notices)
 
-    notices
+    # Keep only intended fields
+    notices_dataframe = pd.DataFrame(notices)
+    existing_cols = [c for c in fields if c in notices_dataframe.columns]
+    notices_dataframe_filtered = notices_dataframe[existing_cols]
+
+    # Save results
+    os.makedirs(os.path.join(results_path), exist_ok=True)
+    notices_dataframe_filtered.to_csv(results_file_path, index=False)
+    if not quiet:
+        print(f"✓ Save {os.path.basename(results_file_path)}")
 
 
 def call_search_api(

@@ -65,6 +65,8 @@ def main(clean, quiet):
     )
 
     search_ted_notices(
+        bronze_path,
+        "test.csv",
         query=query,
         fields=fields,
     )
@@ -76,7 +78,7 @@ def main(clean, quiet):
     create_jupyter_notebook_for_csv(
         data_product_manifest=data_product_manifest,
         results_path=script_path,
-        data_path=gold_path,
+        data_path=bronze_path,
         clean=True,
         quiet=quiet,
     )
@@ -84,8 +86,8 @@ def main(clean, quiet):
     update_data_product_manifest(
         data_product_manifest=data_product_manifest,
         config_path=script_path,
-        data_paths=[gold_path],
-        file_endings=(".csv", ".parquet"),
+        data_paths=[bronze_path],
+        file_endings=(".csv"),
         git_lfs=True,
     )
 
