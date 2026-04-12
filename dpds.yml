@@ -1,0 +1,38 @@
+---
+dataProductDescriptor: data-product-descriptor
+info:
+  fullyQualifiedName: urn:dpds:opendataproduct:dataproducts:eu-tenders:1.0
+  name: EU Tenders
+  version: '1.0'
+  domain: domain
+  owner:
+    id: Open Data Product
+    name: Open Data Product
+  id: eu-tenders
+  entityType:
+  displayName: EU Tenders
+  description:
+  contactPoints:
+interfaceComponents:
+  outputPorts:
+    - promises:
+      expectations:
+      obligations:
+      id: eu-tenders-public-transport
+      fullyQualifiedName: eu-tenders-public-transport
+      entityType:
+      name: ''
+      version:
+      displayName:
+      description:
+      componentGroup:
+      tags:
+      externalDocs:
+  inputPorts: []
+  discoveryPorts:
+  observabilityPorts:
+  controlPorts:
+internalComponents:
+components:
+tags:
+externalDocs:

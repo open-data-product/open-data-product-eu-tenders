@@ -9,7 +9,7 @@
   <h1 align="center">EU Tenders</h1>
 
   <p align="center">
-    Data product providing TODO
+    Data product providing EU Tenders
   </p>
 </p>
 
