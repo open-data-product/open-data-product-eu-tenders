@@ -37,6 +37,17 @@ def transform_eu_tenders(
             pass
         return val
 
+    def _unpack_single_list(val):
+        if pd.isna(val):
+            return val
+        try:
+            parsed = ast.literal_eval(str(val))
+            if isinstance(parsed, list) and len(parsed) == 1:
+                return parsed[0]
+        except (ValueError, SyntaxError):
+            pass
+        return val
+
     for subdir, dirs, files in sorted(os.walk(source_path)):
         for file_name in sorted(files):
             _, file_extension = os.path.splitext(file_name)
@@ -62,6 +73,11 @@ def transform_eu_tenders(
                 for col in fields:
                     if col in dataframe.columns:
                         dataframe[col] = dataframe[col].apply(_extract_deu_or_eng)
+
+                # Unpack single-item lists
+                for col in fields:
+                    if col in dataframe.columns:
+                        dataframe[col] = dataframe[col].apply(_unpack_single_list)
 
                 # Write results file
                 os.makedirs(
