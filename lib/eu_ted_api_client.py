@@ -1,5 +1,6 @@
 import os
 import time
+import xml.dom.minidom
 from enum import Enum
 from typing import Optional
 
@@ -51,7 +52,7 @@ def build_fields(fields: [Field]):
 
 @TrackingDecorator.track_time
 def search_ted_notices(
-    results_file_path, query, fields, scope: Scope = "ACTIVE", clean=False, quiet=False
+    results_details_path, results_file_path, query, fields, scope: Scope = "ACTIVE", clean=False, quiet=False
 ):
     if not clean and os.path.exists(results_file_path):
         not quiet and print(f"✓ Already exists {os.path.basename(results_file_path)}")
@@ -70,7 +71,7 @@ def search_ted_notices(
     page_index_end = total_notice_count // page_size + page_index_start + 1
 
     for page in tqdm(
-        range(page_index_start, page_index_end), desc="Load page", unit="page"
+        range(page_index_start, page_index_end), desc="Load notices", unit="page"
     ):
         ted_search_response = call_search_api(
             query, fields, scope, limit=page_size, page=page, quiet=quiet
@@ -92,7 +93,9 @@ def search_ted_notices(
         return val
 
     for col in existing_cols:
-        notices_dataframe_filtered.loc[:, col] = notices_dataframe_filtered[col].apply(_encode_linebreaks)
+        notices_dataframe_filtered.loc[:, col] = notices_dataframe_filtered[col].apply(
+            _encode_linebreaks
+        )
 
     # Save results
     os.makedirs(os.path.join(os.path.dirname(results_file_path)), exist_ok=True)
@@ -100,6 +103,17 @@ def search_ted_notices(
         results_file_path, index=False, encoding="utf-8-sig"
     )
     not quiet and print(f"✓ Save {os.path.basename(results_file_path)}")
+
+    # Download details
+    for notice in tqdm(notices, desc="Load notice details", unit="notice"):
+        xml_url = notice["links"]["xml"]["MUL"]
+        publication_number = notice["publication-number"]
+        download_file(
+            os.path.join(results_details_path, f"{publication_number}.xml"),
+            xml_url,
+            clean,
+            quiet=True,
+        )
 
 
 def call_search_api(
@@ -152,3 +166,35 @@ def safe_request(url, payload, retries=5):
             continue
 
         return response
+
+
+def download_file(file_path, url, clean, quiet):
+    if clean or not os.path.exists(file_path):
+        try:
+            data = requests.get(url)
+            if str(data.status_code).startswith("2"):
+                os.makedirs(os.path.join(os.path.dirname(file_path)), exist_ok=True)
+
+                _, extension = os.path.splitext(file_path)
+                if extension == ".xml":
+                    xml_content = xml.dom.minidom.parseString(data.content).toprettyxml()
+
+                    # Remove empty lines
+                    lines = xml_content.splitlines()
+                    non_empty_lines = [line for line in lines if line.strip()]
+                    xml_content = "\n".join(non_empty_lines)
+
+                    with open(file_path, "w", encoding="utf-8") as file:
+                        file.write(xml_content)
+                    not quiet and print(f"✓ Download {os.path.basename(file_path)}")
+                else:
+                    with open(file_path, "wb", encoding="utf-8") as file:
+                        file.write(data.content)
+                    not quiet and print(f"✓ Download {os.path.basename(file_path)}")
+            else:
+                not quiet and print(f"✗️ Error: {str(data.status_code)}, url {url}")
+        except Exception as e:
+            print(f"✗️ Exception: {str(e)}, url {url}")
+
+    else:
+        not quiet and print(f"✓ Already exists {os.path.basename(file_path)}")

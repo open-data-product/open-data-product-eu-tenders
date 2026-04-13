@@ -121,6 +121,7 @@ def main(clean, quiet):
         )
 
         search_ted_notices(
+            results_details_path=os.path.join(bronze_path, "eu-tenders-xml"),
             results_file_path=os.path.join(
                 bronze_path,
                 "eu-tenders-public-transport",
