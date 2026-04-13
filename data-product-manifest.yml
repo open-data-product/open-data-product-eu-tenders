@@ -6,7 +6,7 @@ metadata:
   description:
   url: https://github.com/open-data-product/open-data-product-eu-tenders
   license: CC-BY 4.0
-  updated: 2026-04-12
+  updated: 2026-04-13
   schema:
 input_ports:
 transformation_steps:
@@ -30,7 +30,7 @@ output_ports:
       description:
       url: https://github.com/open-data-product/open-data-product-eu-tenders/tree/main/data/02-silver/eu-tenders-public-transport
       license: CC-BY 4.0
-      updated: 2026-04-12
+      updated: 2026-04-13
       schema:
     files:
       - https://media.githubusercontent.com/media/open-data-product/open-data-product-eu-tenders/refs/heads/main/data/02-silver/eu-tenders-public-transport/eu-tenders-public-transport-DE1.csv
