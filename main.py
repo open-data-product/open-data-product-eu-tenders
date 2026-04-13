@@ -37,7 +37,7 @@ from opendataproduct.document.jupyter_notebook_creator import (
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
 
-from eu_ted_api_client import Scope
+from eu_ted_api_client import Scope, Field
 from lib.eu_ted_transformer import transform_eu_tenders
 from lib.eu_ted_api_client import search_ted_notices
 
@@ -64,34 +64,34 @@ def main(clean, quiet):
     #
 
     fields = [
-        "notice-type",
-        "place-of-performance",
-        "procedure-type",
-        "publication-date",
-        "publication-number",
-        "buyer-name",
-        "title-proc",
-        "additional-info-proc",
-        "document-url-lot",
-        "option-description-lot",
-        "description-lot",
-        "description-part",
-        "description-proc",
-        "contract-duration-start-date-lot",
-        "contract-duration-start-date-part",
-        "contract-duration-end-date-lot",
-        "contract-duration-end-date-part",
-        "winner-name",
-        "vehicle-type-val-res",
-        "main-classification-proc",
-        "direct-award-justification-proc",
-        "selection-criterion-description-lot",
-        "organisation-contact-point-buyer",
-        "organisation-tel-buyer",
-        "organisation-email-buyer",
-        "renewal-maximum-lot",
-        "total-value",
-        "award-criterion-type-lot",
+        Field.NOTICE_TYPE,
+        Field.PLACE_OF_PERFORMANCE,
+        Field.PROCEDURE_TYPE,
+        Field.PUBLICATION_DATE,
+        Field.PUBLICATION_NUMBER,
+        Field.BUYER_NAME,
+        Field.TITLE_PROC,
+        Field.ADDITIONAL_INFO_PROC,
+        Field.DOCUMENT_URL_LOT,
+        Field.OPTION_DESCRIPTION_LOT,
+        Field.DESCRIPTION_LOT,
+        Field.DESCRIPTION_PART,
+        Field.DESCRIPTION_PROC,
+        Field.CONTRACT_DURATION_START_DATE_LOT,
+        Field.CONTRACT_DURATION_START_DATE_PART,
+        Field.CONTRACT_DURATION_END_DATE_LOT,
+        Field.CONTRACT_DURATION_END_DATE_PART,
+        Field.WINNER_NAME,
+        Field.VEHICLE_TYPE_VAL_RES,
+        Field.MAIN_CLASSIFICATION_PROC,
+        Field.DIRECT_AWARD_JUSTIFICATION_PROC,
+        Field.SELECTION_CRITERION_DESCRIPTION_LOT,
+        Field.ORGANISATION_CONTACT_POINT_BUYER,
+        Field.ORGANISATION_TEL_BUYER,
+        Field.ORGANISATION_EMAIL_BUYER,
+        Field.RENEWAL_MAXIMUM_LOT,
+        Field.TOTAL_VALUE,
+        Field.AWARD_CRITERION_TYPE_LOT,
     ]
 
     # Iterate over NUTS-1 regions

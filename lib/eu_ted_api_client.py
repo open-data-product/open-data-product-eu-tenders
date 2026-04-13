@@ -43,16 +43,48 @@ def build_query(search_term=None):
 
 
 class Field(Enum):
-    PUBLICATION_NUMBER = "ND"
+    NOTICE_TYPE = "notice-type"
+    PLACE_OF_PERFORMANCE = "place-of-performance"
+    PROCEDURE_TYPE = "procedure-type"
+    PUBLICATION_DATE = "publication-date"
+    PUBLICATION_NUMBER = "publication-number"
+    BUYER_NAME = "buyer-name"
+    TITLE_PROC = "title-proc"
+    ADDITIONAL_INFO_PROC = "additional-info-proc"
+    DOCUMENT_URL_LOT = "document-url-lot"
+    OPTION_DESCRIPTION_LOT = "option-description-lot"
+    DESCRIPTION_LOT = "description-lot"
+    DESCRIPTION_PART = "description-part"
+    DESCRIPTION_PROC = "description-proc"
+    CONTRACT_DURATION_START_DATE_LOT = "contract-duration-start-date-lot"
+    CONTRACT_DURATION_START_DATE_PART = "contract-duration-start-date-part"
+    CONTRACT_DURATION_END_DATE_LOT = "contract-duration-end-date-lot"
+    CONTRACT_DURATION_END_DATE_PART = "contract-duration-end-date-part"
+    WINNER_NAME = "winner-name"
+    VEHICLE_TYPE_VAL_RES = "vehicle-type-val-res"
+    MAIN_CLASSIFICATION_PROC = "main-classification-proc"
+    DIRECT_AWARD_JUSTIFICATION_PROC = "direct-award-justification-proc"
+    SELECTION_CRITERION_DESCRIPTION_LOT = "selection-criterion-description-lot"
+    ORGANISATION_CONTACT_POINT_BUYER = "organisation-contact-point-buyer"
+    ORGANISATION_TEL_BUYER = "organisation-tel-buyer"
+    ORGANISATION_EMAIL_BUYER = "organisation-email-buyer"
+    RENEWAL_MAXIMUM_LOT = "renewal-maximum-lot"
+    TOTAL_VALUE = "total-value"
+    AWARD_CRITERION_TYPE_LOT = "award-criterion-type-lot"
 
-
-def build_fields(fields: [Field]):
-    return [f.value for f in fields]
+    def __init__(self, api_field):
+        self.api_field = api_field
 
 
 @TrackingDecorator.track_time
 def search_ted_notices(
-    results_details_path, results_file_path, query, fields, scope: Scope = "ACTIVE", clean=False, quiet=False
+    results_details_path,
+    results_file_path,
+    query,
+    fields: [Field],
+    scope: Scope = "ACTIVE",
+    clean=False,
+    quiet=False,
 ):
     if not clean and os.path.exists(results_file_path):
         not quiet and print(f"✓ Already exists {os.path.basename(results_file_path)}")
@@ -60,9 +92,11 @@ def search_ted_notices(
 
     notices = []
 
+    api_fields = [f.api_field for f in fields]
+
     # Check how many notices exist
     ted_search_response = call_search_api(
-        query, fields, scope, limit=1, page=1, quiet=quiet
+        query, api_fields, scope, limit=1, page=1, quiet=quiet
     )
     total_notice_count = ted_search_response.totalNoticeCount
 
@@ -74,13 +108,13 @@ def search_ted_notices(
         range(page_index_start, page_index_end), desc="Load notices", unit="page"
     ):
         ted_search_response = call_search_api(
-            query, fields, scope, limit=page_size, page=page, quiet=quiet
+            query, api_fields, scope, limit=page_size, page=page, quiet=quiet
         )
         notices.extend(ted_search_response.notices)
 
     # Keep only intended fields
     notices_dataframe = pd.DataFrame(notices)
-    existing_cols = [c for c in fields if c in notices_dataframe.columns]
+    existing_cols = [c for c in api_fields if c in notices_dataframe.columns]
     notices_dataframe_filtered = notices_dataframe[existing_cols].copy()
 
     def _encode_linebreaks(val):
@@ -117,7 +151,7 @@ def search_ted_notices(
 
 
 def call_search_api(
-    query, fields, scope: Scope = "ACTIVE", limit=10, page=1, quiet=False
+    query, api_fields: [str], scope: Scope = "ACTIVE", limit=10, page=1, quiet=False
 ) -> TedSearchResponse:
     """
     Calls the EU TED Search API
@@ -135,7 +169,7 @@ def call_search_api(
         url=url,
         payload={
             "query": query,
-            "fields": fields,
+            "fields": api_fields,
             "scope": scope if isinstance(scope, str) else scope.value,
             "limit": limit,
             "page": page,
@@ -177,7 +211,9 @@ def download_file(file_path, url, clean, quiet):
 
                 _, extension = os.path.splitext(file_path)
                 if extension == ".xml":
-                    xml_content = xml.dom.minidom.parseString(data.content).toprettyxml()
+                    xml_content = xml.dom.minidom.parseString(
+                        data.content
+                    ).toprettyxml()
 
                     # Remove empty lines
                     lines = xml_content.splitlines()
