@@ -37,6 +37,7 @@ from opendataproduct.document.jupyter_notebook_creator import (
 from opendataproduct.document.odps_canvas_generator import generate_odps_canvas
 from opendataproduct.document.odps_updater import update_odps
 
+from eu_ted_api_client import Scope
 from lib.eu_ted_transformer import transform_eu_tenders
 from lib.eu_ted_api_client import search_ted_notices
 
@@ -127,6 +128,7 @@ def main(clean, quiet):
             ),
             query=query,
             fields=fields,
+            scope=Scope.ALL
         )
 
     #
