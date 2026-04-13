@@ -131,7 +131,7 @@ def main(clean, quiet):
             fields=fields,
             scope=Scope.ALL,
             clean=clean,
-            quiet=quiet
+            quiet=quiet,
         )
 
     #

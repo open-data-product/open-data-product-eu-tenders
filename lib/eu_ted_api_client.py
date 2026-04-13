@@ -42,6 +42,11 @@ def build_query(search_term=None):
     return query
 
 
+XPATH_CONTRACTING_BODY = ".//CONTRACTING_BODY"
+XPATH_ADDRESS_CONTRACTING_BODY = f"{XPATH_CONTRACTING_BODY}/ADDRESS_CONTRACTING_BODY"
+XPATH_OBJECT_CONTRACT = ".//OBJECT_CONTRACT"
+
+
 class Field(Enum):
     NOTICE_TYPE = "notice-type"
     PLACE_OF_PERFORMANCE = "place-of-performance"
@@ -49,31 +54,73 @@ class Field(Enum):
     PUBLICATION_DATE = "publication-date"
     PUBLICATION_NUMBER = "publication-number"
     BUYER_NAME = "buyer-name"
-    TITLE_PROC = "title-proc"
-    ADDITIONAL_INFO_PROC = "additional-info-proc"
-    DOCUMENT_URL_LOT = "document-url-lot"
-    OPTION_DESCRIPTION_LOT = "option-description-lot"
+    TITLE_PROC = ("title-proc", f"{XPATH_OBJECT_CONTRACT}/TITLE/P")
+    ADDITIONAL_INFO_PROC = (
+        "additional-info-proc",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/INFO_ADD/P",
+    )
+    DOCUMENT_URL_LOT = ("document-url-lot", f"{XPATH_CONTRACTING_BODY}/URL_DOCUMENT")
+    OPTION_DESCRIPTION_LOT = (
+        "option-description-lot",
+        ".//OBJECT_DESCR/OPTIONS_DESCR/P",
+    )
     DESCRIPTION_LOT = "description-lot"
     DESCRIPTION_PART = "description-part"
-    DESCRIPTION_PROC = "description-proc"
-    CONTRACT_DURATION_START_DATE_LOT = "contract-duration-start-date-lot"
+    DESCRIPTION_PROC = ("description-proc", f"{XPATH_OBJECT_CONTRACT}/SHORT_DESCR")
+    CONTRACT_DURATION_START_DATE_LOT = (
+        "contract-duration-start-date-lot",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/DATE_START",
+    )
     CONTRACT_DURATION_START_DATE_PART = "contract-duration-start-date-part"
-    CONTRACT_DURATION_END_DATE_LOT = "contract-duration-end-date-lot"
+    CONTRACT_DURATION_END_DATE_LOT = (
+        "contract-duration-end-date-lot",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/DATE_END",
+    )
     CONTRACT_DURATION_END_DATE_PART = "contract-duration-end-date-part"
-    WINNER_NAME = "winner-name"
+    WINNER_NAME = (
+        "winner-name",
+        ".//AWARDED_CONTRACT/CONTRACTORS/CONTRACTOR/ADDRESS_CONTRACTOR/OFFICIALNAME",
+    )
     VEHICLE_TYPE_VAL_RES = "vehicle-type-val-res"
-    MAIN_CLASSIFICATION_PROC = "main-classification-proc"
-    DIRECT_AWARD_JUSTIFICATION_PROC = "direct-award-justification-proc"
-    SELECTION_CRITERION_DESCRIPTION_LOT = "selection-criterion-description-lot"
-    ORGANISATION_CONTACT_POINT_BUYER = "organisation-contact-point-buyer"
-    ORGANISATION_TEL_BUYER = "organisation-tel-buyer"
-    ORGANISATION_EMAIL_BUYER = "organisation-email-buyer"
-    RENEWAL_MAXIMUM_LOT = "renewal-maximum-lot"
+    MAIN_CLASSIFICATION_PROC = (
+        "main-classification-proc",
+        f"{XPATH_OBJECT_CONTRACT}/CPV_MAIN/CPV_CODE",
+        "CODE",
+    )
+    DIRECT_AWARD_JUSTIFICATION_PROC = (
+        "direct-award-justification-proc",
+        ".//PROCEDURE/PT_AWARD_CONTRACT_WITHOUT_CALL/D_JUSTIFICATION",
+    )
+    SELECTION_CRITERION_DESCRIPTION_LOT = (
+        "selection-criterion-description-lot",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/CRITERIA_CANDIDATE/P",
+    )
+    ORGANISATION_CONTACT_POINT_BUYER = (
+        "organisation-contact-point-buyer",
+        f"{XPATH_ADDRESS_CONTRACTING_BODY}/CONTACT_POINT",
+    )
+    ORGANISATION_TEL_BUYER = (
+        "organisation-tel-buyer",
+        f"{XPATH_ADDRESS_CONTRACTING_BODY}/PHONE",
+    )
+    ORGANISATION_EMAIL_BUYER = (
+        "organisation-email-buyer",
+        f"{XPATH_ADDRESS_CONTRACTING_BODY}/E_MAIL",
+    )
+    RENEWAL_MAXIMUM_LOT = (
+        "renewal-maximum-lot",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/RENEWAL_DESCR/P",
+    )
     TOTAL_VALUE = "total-value"
-    AWARD_CRITERION_TYPE_LOT = "award-criterion-type-lot"
+    AWARD_CRITERION_TYPE_LOT = (
+        "award-criterion-type-lot",
+        f"{XPATH_OBJECT_CONTRACT}/OBJECT_DESCR/AC/AC_PRICE/AC_WEIGHTING",
+    )
 
-    def __init__(self, api_field):
+    def __init__(self, api_field, xpath=None, xpath_attribute=None):
         self.api_field = api_field
+        self.xpath = xpath
+        self.xpath_attribute = xpath_attribute
 
 
 @TrackingDecorator.track_time
