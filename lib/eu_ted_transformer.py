@@ -85,9 +85,15 @@ def transform_eu_tenders(
                         lambda x: f"https://ted.europa.eu/de/notice/-/detail/{x}" if pd.api.types.is_scalar(x) and pd.notna(x) and str(x).strip() else pd.NA
                     )
 
+                # Format organisation-tel-buyer
+                if "organisation-tel-buyer" in dataframe.columns:
+                    dataframe["organisation-tel-buyer"] = dataframe["organisation-tel-buyer"].apply(
+                        lambda x: f"+{str(x).strip()}" if pd.notna(x) and str(x).strip().startswith("49") else x
+                    )
+
                 # Write results file
                 os.makedirs(
                     os.path.join(os.path.dirname(results_file_path)), exist_ok=True
                 )
                 dataframe.to_csv(results_file_path, index=False, encoding="utf-8-sig")
-                not quiet and print(f"✓ Tranform {os.path.basename(results_file_path)}")
+                not quiet and print(f"✓ Transform {os.path.basename(results_file_path)}")
