@@ -76,7 +76,19 @@ def search_ted_notices(
     # Keep only intended fields
     notices_dataframe = pd.DataFrame(notices)
     existing_cols = [c for c in fields if c in notices_dataframe.columns]
-    notices_dataframe_filtered = notices_dataframe[existing_cols]
+    notices_dataframe_filtered = notices_dataframe[existing_cols].copy()
+
+    def _encode_linebreaks(val):
+        if isinstance(val, str):
+            return val.replace("\r", "\\r").replace("\n", "\\n")
+        elif isinstance(val, dict):
+            return {k: _encode_linebreaks(v) for k, v in val.items()}
+        elif isinstance(val, list):
+            return [_encode_linebreaks(v) for v in val]
+        return val
+
+    for col in existing_cols:
+        notices_dataframe_filtered.loc[:, col] = notices_dataframe_filtered[col].apply(_encode_linebreaks)
 
     # Save results
     os.makedirs(os.path.join(os.path.dirname(results_file_path)), exist_ok=True)
