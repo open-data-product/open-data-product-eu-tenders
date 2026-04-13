@@ -128,7 +128,9 @@ def main(clean, quiet):
             ),
             query=query,
             fields=fields,
-            scope=Scope.ALL
+            scope=Scope.ALL,
+            clean=clean,
+            quiet=quiet
         )
 
     #

@@ -51,8 +51,12 @@ def build_fields(fields: [Field]):
 
 @TrackingDecorator.track_time
 def search_ted_notices(
-    results_file_path, query, fields, scope: Scope = "ACTIVE", quiet=False
+    results_file_path, query, fields, scope: Scope = "ACTIVE", clean=False, quiet=False
 ):
+    if not clean and os.path.exists(results_file_path):
+        not quiet and print(f"✓ Already exists {os.path.basename(results_file_path)}")
+        return
+
     notices = []
 
     # Check how many notices exist
