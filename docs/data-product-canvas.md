@@ -6,7 +6,7 @@
 * owner: Open Data Product
 * url: https://github.com/open-data-product/open-data-product-eu-tenders
 * license: CC-BY 4.0
-* updated: 2026-04-13
+* updated: 2026-04-14
 
 ## Transformation Steps
 
@@ -22,7 +22,7 @@ name: Eu Tenders Public Transport
 * owner: Open Data Product
 * url: https://github.com/open-data-product/open-data-product-eu-tenders/tree/main/data/02-silver/eu-tenders-public-transport
 * license: CC-BY 4.0
-* updated: 2026-04-13
+* updated: 2026-04-14
 
 **Files**
 
