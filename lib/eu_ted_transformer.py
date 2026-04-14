@@ -1,8 +1,7 @@
-import ast
+import json
 import os
 import xml.etree.ElementTree as ET
 
-import numpy as np
 import pandas as pd
 from opendataproduct.tracking_decorator import TrackingDecorator
 
@@ -53,38 +52,54 @@ def transform_eu_tenders(
         return row.get(api_field)
 
     def _dedup_list_string(val):
-        if pd.api.types.is_scalar(val) and pd.isna(val):
+        if pd.api.types.is_scalar(val) and pd.isna(val) or val == "":
             return val
+
+        val_str = str(val).strip()
+        if not (val_str.startswith("[") and val_str.endswith("]")):
+            return val
+
         try:
-            parsed_list = ast.literal_eval(str(val))
+            parsed_list = json.loads(val_str.replace("'", '"'))
             if isinstance(parsed_list, list):
-                return str(list(dict.fromkeys(parsed_list)))
-        except (ValueError, SyntaxError):
+                return str(list(dict.fromkeys(map(str, parsed_list))))
+        except (json.JSONDecodeError, TypeError, ValueError):
             pass
+
         return val
 
     def _extract_deu_or_eng(val):
-        if pd.api.types.is_scalar(val) and pd.isna(val):
-            return ""
+        if pd.isna(val) or val == "" or not isinstance(val, str):
+            return val if pd.notna(val) else ""
+
+        val_trimmed = val.strip()
+        if not (val_trimmed.startswith("{") and val_trimmed.endswith("}")):
+            return val
+
         try:
-            parsed_dict = ast.literal_eval(str(val))
+            parsed_dict = json.loads(val_trimmed.replace("'", '"'))
+
             if isinstance(parsed_dict, dict):
-                if "deu" in parsed_dict:
-                    return parsed_dict["deu"]
-                elif "eng" in parsed_dict:
-                    return parsed_dict["eng"]
-        except (ValueError, SyntaxError):
+                return parsed_dict.get("deu") or parsed_dict.get("eng") or val
+
+        except (json.JSONDecodeError, TypeError, ValueError):
             pass
+
         return val
 
     def _unpack_single_list(val):
-        if pd.api.types.is_scalar(val) and pd.isna(val):
+        if pd.isna(val) or not isinstance(val, str):
             return val
+
+        val_trimmed = val.strip()
+        if not (val_trimmed.startswith("[") and val_trimmed.endswith("]")):
+            return val
+
         try:
-            parsed = ast.literal_eval(str(val))
+            parsed = json.loads(val_trimmed.replace("'", '"'))
             if isinstance(parsed, list) and len(parsed) == 1:
                 return parsed[0]
-        except (ValueError, SyntaxError):
+        except:
             pass
         return val
 
@@ -107,19 +122,10 @@ def transform_eu_tenders(
                 # Fill empty fields with values from XML using xpath
                 for field in fields:
                     if field.xpath:
-                        empty_cells_before = (
-                            dataframe[field.api_field].replace("", np.nan).isna().sum()
-                        )
                         dataframe[field.api_field] = dataframe.apply(
                             _fallback_empty_fields,
                             axis=1,
                             args=(field.api_field, field.xpath, field.xpath_attribute),
-                        )
-                        empty_cells_after = (
-                            dataframe[field.api_field].replace("", np.nan).isna().sum()
-                        )
-                        not quiet and print(
-                            f"  {empty_cells_before} > {empty_cells_after}\t Fill column {field.api_field} with xml values"
                         )
 
                 # De-duplicate lists
