@@ -88,6 +88,11 @@ def transform_eu_tenders(
         return val
 
     def _unpack_single_list(val):
+        if pd.api.types.is_list_like(val):
+            if len(val) == 1:
+                return val[0]
+            return val
+
         if pd.isna(val) or not isinstance(val, str):
             return val
 
